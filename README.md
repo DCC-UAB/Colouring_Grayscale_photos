@@ -6,6 +6,15 @@ In this project, we aim to develop a program that can automatically colorize bla
 ## Code structure
 You must create as many folders as you consider. You can use the proposed structure or replace it by the one in the base code that you use as starting point. Do not forget to add Markdown files as needed to explain well the code and how to use it.
 
+## Database
+For this deep colorization project, we utilized two distinct datasets: one consisting of face images and the other comprising fruit images with a white background. These datasets were individually chosen to ensure diversity within each domain and enable the model to learn specific colorization patterns for faces and fruits.
+
+### Face Dataset
+The face dataset used in this project was sourced from a dedicated GitHub repository, [DeepColorization](https://github.com/2014mchidamb/DeepColorization/tree/master/face_images). This repository provides a comprehensive collection of face images, carefully curated to encompass a wide range of facial features, expressions, and lighting conditions.
+
+### Fruits Dataset
+The fruit dataset was sourced from another GitHub repository, [ColorSurvey](https://github.com/saeed-anwar/ColorSurvey). These images were chosen to accurately reflect the natural colors of different fruits, each fruit image captured with a white background, allowing the focus to be solely on the fruit's color. The images are sorted in 20 distinct fruit categories, covering a wide variety of commonly consumed fruits; this diverge range of types let the model to accurately colorize various species of fruits. 
+
 ## Example Code
 The given code is a simple CNN example training on the MNIST dataset. It shows how to set up the [Weights & Biases](https://wandb.ai/site)  package to monitor how your network is learning, or not.
 
