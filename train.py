@@ -26,7 +26,7 @@ def train(model, loader, criterion, optimizer, num_epochs):
             optimizer.zero_grad()
             greys = loader.get_batch_greys(i)
             label = loader.get_batch_labels(i)[0]
-            outs = model(greys.to(device))[0]*128
+            outs = model(greys.to(device))[0]
             train_loss = criterion(outs.to(device), label.to(device))
             train_loss.backward()
             optimizer.step()

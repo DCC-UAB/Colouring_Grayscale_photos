@@ -1,6 +1,7 @@
 import os
 import random
 import torch
+from torchvision import transforms
 from PIL import Image
 from torch.utils.data import Dataset
 from Preprocessing.ColorProcessing import *
@@ -19,7 +20,7 @@ class DataClass(Dataset):
         h = tensor_image.shape[1]
         trans2 = transforms.Compose([
             transforms.CenterCrop(h),
-            transforms.Resize((225,225))
+            transforms.Resize((128,128))
         ])
         return trans2(tensor_image)
     
@@ -38,9 +39,8 @@ class LabImage():
         self.ab = list()
         print("Num data: " + str(len(self.dataclass)))
         for i in range(len(self.dataclass)):
+            print(i)
             image = self.dataclass[i]
-            print("Image size:")
-            print(image.shape)
             imageLab = TransformToLAB(image)
             self.lab_images.append(imageLab)
         self.split_channels()
@@ -55,8 +55,8 @@ class LabImage():
         self.L = list()
         self.ab = list()
         for image in self.lab_images:
-            self.L.append(torch.unsqueeze(image[0],0))
-            self.ab.append(image[1:3])
+            self.L.append(torch.unsqueeze(image[0],0)/100)
+            self.ab.append(image[1:3]/128)
     
     def shuffle(self):
         random.shuffle(self.lab_images)
