@@ -16,7 +16,12 @@ class DataClass(Dataset):
         img_loc = os.path.join(self.image_path, self.total_imgs[idx])
         image = Image.open(img_loc).convert("RGB")
         tensor_image = self.transform(image)
-        return tensor_image
+        h = tensor_image.shape[1]
+        trans2 = transforms.Compose([
+            transforms.CenterCrop(h),
+            transforms.Resize((225,225))
+        ])
+        return trans2(tensor_image)
     
     def __len__(self):
         return len(self.total_imgs)
