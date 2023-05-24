@@ -1,4 +1,6 @@
 import random
+import torch
+import numpy as np
 from DataClass import *
 from torchvision import transforms
 import matplotlib.pyplot as plt
@@ -12,6 +14,7 @@ class LoaderClass():
         self.num_workers = num_workers
         self.batches_list = list()
         self.idx = 0
+        self.batch_sampler()
 
     def __len__(self):
         return len(self.dataset)
@@ -45,3 +48,17 @@ class LoaderClass():
         for i in range(res):
             idx = random.randint(0, num_batches-1)
             self.batches_list[idx].append(self.dataset[total_divided + i])
+            
+    def get_batch_greys(self, idx):
+        batch = self.batches_list[idx]
+        greys = list()
+        for sample in batch:
+            greys.append(sample[0])
+        return torch.stack(greys)
+    
+    def get_batch_labels(self, idx):
+        batch = self.batches_list[idx]
+        ab = list()
+        for sample in batch:
+            ab.append(sample[1])
+        return torch.stack(ab)
