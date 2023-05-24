@@ -1,7 +1,7 @@
 import random
 import torch
 import numpy as np
-from DataClass import *
+from Preprocessing.DataClass import *
 from torchvision import transforms
 import matplotlib.pyplot as plt
 

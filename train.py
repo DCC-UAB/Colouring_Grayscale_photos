@@ -6,7 +6,9 @@ from torch import nn
 from Preprocessing.DataClass import *
 from Preprocessing.LoaderClass import *
 from Preprocessing.ColorProcessing import *
-from Models.Model1 import *
+from models.modelAutoencoder1 import *
+
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def train(model, loader, criterion, optimizer, num_epochs):
     #wandb.init
@@ -16,13 +18,16 @@ def train(model, loader, criterion, optimizer, num_epochs):
     example_ct = 0
     batch_ct = 0
     for epoch in range(num_epochs):
+        loader.shuffle_data()
+        loader.batch_sampler()
         i = 0
         for batch in loader:
+            print(i)
             optimizer.zero_grad()
             greys = loader.get_batch_greys(i)
-            label = loader.get_batch_labels(i)
-            outs = model(greys)
-            train_loss = criterion(outs, label)
+            label = loader.get_batch_labels(i)[0]
+            outs = model(greys.to(device))[0]*128
+            train_loss = criterion(outs.to(device), label.to(device))
             train_loss.backward()
             optimizer.step()
             example_ct += len(batch)

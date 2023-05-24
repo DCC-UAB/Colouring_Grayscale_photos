@@ -13,6 +13,9 @@ from test import *
 from utils.utils import *
 from tqdm.auto import tqdm
 
+from Preprocessing.DataClass import *
+from Preprocessing.LoaderClass import *
+
 # Ensure deterministic behavior
 torch.backends.cudnn.deterministic = True
 random.seed(hash("setting random seeds") % 2**32 - 1)

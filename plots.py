@@ -5,7 +5,7 @@ from  matplotlib.colors import LinearSegmentedColormap
 def showImage(image):
     fig, axs = plt.subplots(1,1, figsize=(4, 4))
     axs.imshow(image.permute(1,2,0))
-    plt.show()
+    plt.savefig('./imatgesProva/prova1')
 
 
 def showChannels_RGB(image):
