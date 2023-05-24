@@ -31,9 +31,13 @@ class LabImage():
         self.lab_images = list()
         self.L = list()
         self.ab = list()
+        print("Num data: " + str(len(self.dataclass)))
         for i in range(len(self.dataclass)):
-            image = TransformToLAB(self.dataclass[i])
-            self.lab_images.append(image)
+            image = self.dataclass[i]
+            print("Image size:")
+            print(image.shape)
+            imageLab = TransformToLAB(image)
+            self.lab_images.append(imageLab)
         self.split_channels()
 
     def __getitem__(self, idx):

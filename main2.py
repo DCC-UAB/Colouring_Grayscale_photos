@@ -15,7 +15,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 if __name__ == '__main__':
     #wandb.init
     trans = torchvision.transforms.ToTensor()
-    faces_path = './TrainFaces'
+    faces_path = './LandscapeDataset'
     dataset = DataClass(faces_path, transform=trans)
     lab_data = LabImage(dataset)
 
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     #  lab_data[0][1].shape => [2, 128, 128]
 
     dataloader = LoaderClass(lab_data, 64)
-    model = modelAutoencoder1(input_size = 128).to(device)
+    model = modelAutoencoder1(input_size = 225).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     criterion = nn.MSELoss()
     train(model, dataloader, criterion, optimizer, 30)
