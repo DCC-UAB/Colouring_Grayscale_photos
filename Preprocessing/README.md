@@ -10,7 +10,7 @@ This function takes an input image in the LAB color space and transforms it into
 
 ## DataClass
 This file defines the `DataClass` and `LabImage` classes for handling image datasets.
-### `DataClass´
+### `DataClass`
 This class is a subclass of `torch.utils.data.Dataset` and provides methods for loading and processing images.
 ### `LabImage`
 This class is a collection of the LAB color space images crated from the `DataClass`dataset.
