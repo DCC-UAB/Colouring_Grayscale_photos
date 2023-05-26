@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 from  matplotlib.colors import LinearSegmentedColormap
 
 
-def showImage(image):
+def showImage(image, path):
     fig, axs = plt.subplots(1,1, figsize=(4, 4))
     axs.imshow(image.permute(1,2,0))
-    plt.savefig('./imatgesProva/prova1')
+    plt.savefig(path)
 
 
 def showChannels_RGB(image):

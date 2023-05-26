@@ -8,6 +8,7 @@ from Preprocessing.LoaderClass import *
 from Preprocessing.ColorProcessing import *
 from models.modelAutoencoder1 import *
 from models.modelAutoencoder import *
+from models.ConvAE2 import *
 from train import *
 from plots import *
 
@@ -39,18 +40,22 @@ if __name__ == '__main__':
 
     dataloader = LoaderClass(lab_data, 64)
     print("Dataloader done")
-    model = modelAutoencoder1(input_size = 128).to(device)
+    model = ConvAE2().to(device)
     init_parameters(model)
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-4, weight_decay = 0.005)
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay = 0.0)
     criterion = nn.MSELoss()
-    train(model, dataloader, criterion, optimizer, 50)
+    train(model, dataloader, criterion, optimizer, 20)
+
 
     #PREDICT 1 IMAGE
-    image = lab_data[65]
+    image = lab_data[20]
     grey = image[0]
     pred = model(grey.to(device)).to('cpu')
     print(pred)
     print(image[1])
     colored_image_Lab = torch.cat([grey*100, pred*128], dim=0).detach()
+    original_image_Lab = torch.cat([grey*100, image[1]*128], dim=0)
     colored_RGB = TransformToRGB(colored_image_Lab)
-    showImage(colored_RGB)
+    original_RGB = TransformToRGB(original_image_Lab)
+    showImage(colored_RGB,'./imatgesProva/pred')
+    showImage(original_RGB,'./imatgesProva/original')
