@@ -8,33 +8,16 @@ import matplotlib.pyplot as plt
 class LoaderClass():
     def __init__(self, dataset, batch_size=1, shuffle=False, num_workers=1):
         self.dataset = dataset
-        print(len(self.dataset))
         self.batch_size = batch_size
         self.shuffle = shuffle
         self.num_workers = num_workers
         self.batches_list = list()
         self.idx = 0
         self.batch_sampler()
-
+        
     def __len__(self):
-        return len(self.dataset)
+        return len(self.batches_list)
     
-    def __getitem__(self, idx):
-        return self.batches_list[idx]
-    
-    def __next__(self):
-        if self.idx >= len(self.dataset):
-            raise StopIteration
-        elem = self.dataset[self.idx]
-        self.idx += 1
-        return elem
-    
-    def __iter__(self):
-        return iter(self.batches_list)
-
-    def shuffle_data(self):
-        self.dataset.shuffle()
-
     def batch_sampler(self):
         self.batches_list = list()
         num_batches, res = divmod(len(self.dataset), self.batch_size)
@@ -48,17 +31,25 @@ class LoaderClass():
         for i in range(res):
             idx = random.randint(0, num_batches-1)
             self.batches_list[idx].append(self.dataset[total_divided + i])
-            
-    def get_batch_greys(self, idx):
+    
+    def __getitem__(self, idx):
         batch = self.batches_list[idx]
         greys = list()
+        labels = list()
         for sample in batch:
-            greys.append(sample[0])
-        return torch.stack(greys)
+            greys.append(torch.unsqueeze(sample[0], dim=0))
+            labels.append(sample[1:3]/128)
+        return (torch.stack(greys), torch.squeeze(torch.stack(labels)))
     
-    def get_batch_labels(self, idx):
-        batch = self.batches_list[idx]
-        ab = list()
-        for sample in batch:
-            ab.append(sample[1])
-        return torch.stack(ab)
+    def __next__(self):
+        if self.idx >= len(self.dataset):
+            raise StopIteration
+        elem = self.dataset[self.idx]
+        self.idx += 1
+        return elem
+    
+    def __iter__(self):
+        return iter(self.batches_list)
+            
+    def shuffle_data(self):
+        self.dataset.shuffle()

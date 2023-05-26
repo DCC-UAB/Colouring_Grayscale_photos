@@ -14,21 +14,23 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 def train(model, loader, criterion, optimizer, num_epochs):
     #wandb.init
     #wandb.watch(model, criterion, log='all', log_freq=10)
-    train_loss = 0
     model.train()
+    train_loss = 0
     example_ct = 0
     batch_ct = 0
     for epoch in range(num_epochs):
         loader.shuffle_data()
         loader.batch_sampler()
+        total_loss = 0
         i = 0
-        for batch in loader:
-            print(i)
+        for num_batch in range(len(loader)):
+            batch = loader[num_batch]
             optimizer.zero_grad()
-            greys = loader.get_batch_greys(i)
-            label = loader.get_batch_labels(i)[0]
-            outs = model(greys.to(device))[0]
-            train_loss = criterion(outs.to(device), label.to(device))
+            x = batch[0]
+            y = batch[1]
+            output = model(x.to(device))
+            train_loss = criterion(output.to(device), y.to(device))
+            total_loss += train_loss
             train_loss.backward()
             optimizer.step()
             example_ct += len(batch)
@@ -37,11 +39,11 @@ def train(model, loader, criterion, optimizer, num_epochs):
 
             #if ((batch_ct + 1) % 25) == 0:
             #    train_log(train_loss, example_ct, epoch)
-        print ("Epoch: " + str(epoch) + " | Loss: " + str(train_loss))
+        print ("Epoch: " + str(epoch) + " | Loss: " + str(total_loss/len(loader)))
         image = loader[0][0]
         grey = image[0]
-        pred = model(grey.to(device)).to('cpu')
-        colored_image_Lab = torch.cat([grey*100, pred*128], dim=0).detach()
+        pred = model(grey.to(device)).to('cpu')*128
+        colored_image_Lab = torch.cat([grey, pred], dim=0).detach()
         colored_RGB = TransformToRGB(colored_image_Lab)
         showImage(colored_RGB,'./imatgesProva/'+str(epoch))
         fig2, axs2 = plt.subplots(1,2, figsize=(15, 6))

@@ -20,8 +20,7 @@ class ConvAE2(nn.Module):
             nn.ReLU(),
             nn.ConvTranspose2d(512, 256, 4, stride=2, padding=1),
             nn.ReLU(),
-            nn.ConvTranspose2d(256, 2, 4, stride=2, padding=1),
-            nn.Tanh()
+            nn.ConvTranspose2d(256, 2, 4, stride=2, padding=1)
         )
         
     def forward(self, x):
