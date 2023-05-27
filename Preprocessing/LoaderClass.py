@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 class LoaderClass():
     def __init__(self, dataset, batch_size=1, shuffle=False, num_workers=1):
         self.dataset = dataset
-        print(len(self.dataset))
         self.batch_size = batch_size
         self.shuffle = shuffle
         self.num_workers = num_workers
@@ -16,11 +15,21 @@ class LoaderClass():
         self.idx = 0
         self.batch_sampler()
 
+    #Returns the number of batches of the dataloader
     def __len__(self):
-        return len(self.dataset)
+        return len(self.batches_list)
     
+    #Returns one batch in tuple form. The first element is a tensor of size [batch_size, 1, 128, 128]
+    #containing all the black and white images; the second is a tensor of size [batch_size, 2, 128, 128]
+    # that contains the a and b channel
     def __getitem__(self, idx):
-        return self.batches_list[idx]
+        batch = self.batches_list[idx]
+        greys = list()
+        labels = list()
+        for sample in batch:
+            greys.append(torch.unsqueeze(sample[0], dim=0))
+            labels.append(sample[1:3]/128)
+        return (torch.stack(greys), torch.squeeze(torch.stack(labels)))
     
     def __next__(self):
         if self.idx >= len(self.dataset):
@@ -48,17 +57,4 @@ class LoaderClass():
         for i in range(res):
             idx = random.randint(0, num_batches-1)
             self.batches_list[idx].append(self.dataset[total_divided + i])
-            
-    def get_batch_greys(self, idx):
-        batch = self.batches_list[idx]
-        greys = list()
-        for sample in batch:
-            greys.append(sample[0])
-        return torch.stack(greys)
-    
-    def get_batch_labels(self, idx):
-        batch = self.batches_list[idx]
-        ab = list()
-        for sample in batch:
-            ab.append(sample[1])
-        return torch.stack(ab)
+           
