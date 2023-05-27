@@ -6,7 +6,7 @@ from Preprocessing.DataClass import *
 from Preprocessing.LoaderClass import *
 from plots import *
 
-def predict(model, image):
+def predict_sample(model, image, path):
     grey = image[0]
     pred = model(grey.to(device)).to('cpu')
     colored_image_Lab = torch.cat([grey*100, pred*128], dim=0).detach()
@@ -20,4 +20,9 @@ def predict(model, image):
     axs[0].axis('off')
     axs[1].imshow(colored_RGB.permute(1,2,0))
     axs[1].axis('off')
-    plt.show()
+    plt..savefig(path)
+
+def prediction(dataset, model, folder, num_samples=1):
+    for i in range(num_samples):
+        image = dataset[i]
+        predict_sample(model, image, folder+str(i))
