@@ -38,7 +38,7 @@ if __name__ == '__main__':
     init_parameters(model)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay = 0.0)
     criterion = nn.MSELoss()
-    train(model, dataloader, criterion, optimizer, 800)
+    train(model, dataloader, criterion, optimizer, 20)
 
 
     #PREDICT 1 IMAGE
