@@ -19,6 +19,7 @@ def train(model, loader, criterion, optimizer, num_epochs):
     example_ct = 0
     batch_ct = 0
     for epoch in range(num_epochs):
+        #Shuffle and batching of the dataloader
         loader.shuffle_data()
         loader.batch_sampler()
         total_loss = 0
@@ -28,8 +29,8 @@ def train(model, loader, criterion, optimizer, num_epochs):
             optimizer.zero_grad()
             x = batch[0]
             y = batch[1]
-            output = model(x.to(device))
-            train_loss = criterion(output.to(device), y.to(device))
+            output = model(x.to(device)) #Prediction of the batch
+            train_loss = criterion(output.to(device), y.to(device)) #Loss calculus
             total_loss += train_loss
             train_loss.backward()
             optimizer.step()
@@ -40,6 +41,8 @@ def train(model, loader, criterion, optimizer, num_epochs):
             #if ((batch_ct + 1) % 25) == 0:
             #    train_log(train_loss, example_ct, epoch)
         print ("Epoch: " + str(epoch) + " | Loss: " + str(total_loss/len(loader)))
+        
+        #Plot an image of the training dataset with predicted colors
         image = loader[0][0]
         grey = image[0]
         pred = model(grey.to(device)).to('cpu')*128
