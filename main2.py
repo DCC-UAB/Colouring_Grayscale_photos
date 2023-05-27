@@ -27,7 +27,7 @@ if __name__ == '__main__':
     #Transformation aplied to the images
     trans = torchvision.transforms.ToTensor()
         
-    faces_path = './LandscapeDataset' #Images path
+    faces_path = './LandscapeDataset/Training' #Images path
     dataset = DataClass(faces_path, transform=trans) #Initialization of the dataset
     dataloader = LoaderClass(dataset, 128) #Initialization of the dataloader
 
