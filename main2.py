@@ -31,30 +31,24 @@ if __name__ == '__main__':
         
     faces_path = './LandscapeDataset'
     dataset = DataClass(faces_path, transform=trans)
-    print("Dataset made")
-    lab_data = LabImage(dataset)
-    print("Lab made")
 
-    #  lab_data[0][0].shape => [128, 128]
-    #  lab_data[0][1].shape => [2, 128, 128]
-
-    dataloader = LoaderClass(lab_data, 64)
+    dataloader = LoaderClass(dataset, 128)
     print("Dataloader done")
     model = ConvAE2().to(device)
     init_parameters(model)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay = 0.0)
     criterion = nn.MSELoss()
-    train(model, dataloader, criterion, optimizer, 20)
+    train(model, dataloader, criterion, optimizer, 500)
 
 
     #PREDICT 1 IMAGE
-    image = lab_data[20]
+    image = dataset[0]
     grey = image[0]
     pred = model(grey.to(device)).to('cpu')
     print(pred)
     print(image[1])
-    colored_image_Lab = torch.cat([grey*100, pred*128], dim=0).detach()
-    original_image_Lab = torch.cat([grey*100, image[1]*128], dim=0)
+    colored_image_Lab = torch.cat([grey, pred], dim=0).detach()
+    original_image_Lab = torch.cat([grey, image[1]], dim=0)
     colored_RGB = TransformToRGB(colored_image_Lab)
     original_RGB = TransformToRGB(original_image_Lab)
     showImage(colored_RGB,'./imatgesProva/pred')
