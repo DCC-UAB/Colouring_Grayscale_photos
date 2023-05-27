@@ -1,0 +1,75 @@
+{
+    "os": "Linux-5.15.0-1038-azure-x86_64-with-glibc2.17",
+    "python": "3.8.16",
+    "heartbeatAt": "2023-05-26T20:57:40.705620",
+    "startedAt": "2023-05-26T20:57:40.188051",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "main.py",
+    "codePath": "main.py",
+    "git": {
+        "remote": "https://github.com/DCC-UAB/xnap-project-matcad_grup_14.git",
+        "commit": "4782e0022dfc1311d8d6939f160e6c6fe58eacc3"
+    },
+    "email": "abril.perezm@autonoma.cat",
+    "root": "/home/xnmaster/DeepColorization/xnap-project-matcad_grup_14",
+    "host": "ML-RefVm-301798",
+    "username": "xnmaster",
+    "executable": "/anaconda/envs/xnap-example/bin/python",
+    "cpu_count": 6,
+    "cpu_count_logical": 6,
+    "cpu_freq": {
+        "current": 2596.988,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2596.988,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2596.988,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2596.988,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2596.988,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2596.988,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2596.988,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "total": 145.1909637451172,
+        "used": 95.93315505981445
+    },
+    "gpu": "Tesla K80",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "Tesla K80",
+            "memory_total": 11997020160
+        }
+    ],
+    "memory": {
+        "total": 54.90073013305664
+    }
+}
