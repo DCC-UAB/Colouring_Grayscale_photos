@@ -27,8 +27,10 @@ if __name__ == '__main__':
     #Transformation aplied to the images
     trans = torchvision.transforms.ToTensor()
         
-    faces_path = './LandscapeDataset/Training' #Images path
-    dataset = DataClass(faces_path, transform=trans) #Initialization of the dataset
+    train_path = '.TrainingLandscape' #Training images path
+    val_path = '.ValidationLandscape' #Validation images path
+    dataset = DataClass(train_path, transform=trans) #Initialization of the dataset
+    
     dataloader = LoaderClass(dataset, 128) #Initialization of the dataloader
 
     model = ConvAE2().to(device) #Initialization of the model
