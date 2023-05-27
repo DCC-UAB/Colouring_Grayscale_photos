@@ -48,11 +48,11 @@ def train(model, loader, criterion, optimizer, num_epochs):
         pred = model(grey.to(device)).to('cpu')*128
         colored_image_Lab = torch.cat([grey, pred], dim=0).detach()
         colored_RGB = TransformToRGB(colored_image_Lab)
-        showImage(colored_RGB,'./imatgesProva/'+str(epoch))
+        showImage(colored_RGB,'./PredictedImages/Training/ColoredEpoch'+str(epoch))
         fig2, axs2 = plt.subplots(1,2, figsize=(15, 6))
         axs2[0].imshow(torch.unsqueeze(pred[0].detach(), 2), cmap='Greys')
         axs2[1].imshow(torch.unsqueeze(pred[1].detach(), 2), cmap='Greys')
-        plt.savefig('./imatgesProva/ab'+str(epoch))
+        plt.savefig('./PredictedImages/Training/SpectrumEpoch'+str(epoch))
 
 
 
