@@ -6,21 +6,25 @@ from Preprocessing.DataClass import *
 from Preprocessing.LoaderClass import *
 from plots import *
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 def predict_sample(model, image, path):
-    grey = image[0]
+    grey = torch.unsqueeze(image[0], dim=0)
     pred = model(grey.to(device)).to('cpu')
-    colored_image_Lab = torch.cat([grey*100, pred*128], dim=0).detach()
-    original_image_Lab = torch.cat([grey*100, image[1]*128], dim=0).detach()
+    print(grey.shape)
+    print(pred.shape)
+    colored_image_Lab = torch.cat([grey, pred*128], dim=0).detach()
+    original_image_Lab = torch.cat([grey, torch.unsqueeze(image[1]*128, dim=0), torch.unsqueeze(image[2]*128, dim=0)], dim=0).detach()
     colored_RGB = TransformToRGB(colored_image_Lab)
     original_RGB = TransformToRGB(original_image_Lab)
 
     # print images
-    fig, axs = plt.subplots(1,2, figsize=(8, 4))
+    fig, axs = plt.subplots(1,2, figsize=(16, 8))
     axs[0].imshow(original_RGB.permute(1,2,0))
     axs[0].axis('off')
     axs[1].imshow(colored_RGB.permute(1,2,0))
     axs[1].axis('off')
-    plt..savefig(path)
+    plt.savefig(path)
 
 def prediction(dataset, model, folder, num_samples=1):
     for i in range(num_samples):

@@ -11,6 +11,7 @@ from models.modelAutoencoder import *
 from models.ConvAE2 import *
 from train import *
 from plots import *
+from prediction import *
 
 #Function to initialize the weights using Xavier initialization
 def init_parameters(model):
@@ -23,19 +24,25 @@ def init_parameters(model):
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 if __name__ == '__main__':
+    print('start')
     #wandb.init
     #Transformation aplied to the images
     trans = torchvision.transforms.ToTensor()
         
-    train_path = '.TrainingLandscape' #Training images path
-    val_path = '.ValidationLandscape' #Validation images path
-    dataset = DataClass(train_path, transform=trans) #Initialization of the dataset
+    train_path = 'TrainingLandscape' #Training images path
+    val_path = 'ValidationLandscape' #Validation images path
+    train_dataset = DataClass(train_path, transform=trans) #Initialization of the dataset
+    print('Train dataset started')
+    val_dataset = DataClass(val_path, transform=trans)
+    print('Val dataset started')
     
-    dataloader = LoaderClass(dataset, 128) #Initialization of the dataloader
+    dataloader = LoaderClass(train_dataset, 64) #Initialization of the dataloader
 
     model = ConvAE2().to(device) #Initialization of the model
     init_parameters(model) #Xavier initialization of the weights
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay = 0.0) #Optimizer initialization
     criterion = nn.MSELoss() #Criterion initialization
     
-    train(model, dataloader, criterion, optimizer, 20) #Training of the model
+    train(model, dataloader, criterion, optimizer, 100) #Training of the model
+
+    prediction(val_dataset, model, './PredictedImages_Validation/',10) #Prediction of some images
