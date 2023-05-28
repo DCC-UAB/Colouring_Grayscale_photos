@@ -1,6 +1,2 @@
 # Models
-This folder contains the different models we have trained and tested. Some are simpler, others more complex and some give us better results than others.
-### `models.py`
-This file contains the definition of the `ConvNet` model, which is a simple convolutional neural network model.
-### `modelAutoencoder.py`
-This file contains the definition of the `modelAutoencoder` model, which is a model with an autoencoder architecture using convolutional layers for the encoder and decoder.
+This folder contains the two models we have used to predict the colors of black and white images. The first model we tried was `ConvAE1.py`, a really simple model formed by four convolutional layers and four maxpoolings. This model does not get good prediction results, this is why another model have been tested, `ConvAE2.py`. This one have ten convolutional layers and an hyperbolic tangent as the final activation function.
