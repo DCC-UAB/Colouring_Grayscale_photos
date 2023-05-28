@@ -45,7 +45,26 @@ python main.py
 ```
 This will train the model ```ConvAE``` with the Landscape dataset in 500 epochs, and will generate 10 images of validation that will be saved in the **PredictedImages_Validation** directory along with the original colored picture. Moreover, a training loss evolution graphic will be saved in the **QuantitativeAnalysis** folder. 
 
+### Train
+We can see how our model has been learning from the different epochs.
+We can visually see the learning journey of our model. Each image it correspond to an specific epoch.
+![My Image](TrainedImages.png)
+We can obsrve the gradual evolution of the model's colorization ability as it learns from the training data. we can see that in the last epochs, we get a very good colorization of the images.
+During the training of our model, we monitored the progression of the losses over each epoch. Here is the losses graph. In this graph we have remove the value in the epoch zero in order to be able to see more precisely the values of the losses.
+![My Image](LossEvaluation\evaluation.png)
 
+### Validation
+Before considering the model for good, we have to examine how is conducted the validation process. Let's compare the original image in the RGB space to the one returned by our model.
+![My Image](ValidationImages.png)
+We notice that the coloring is lower than expected after seeing how our model learned. This indicate that our model is not performing as accurately as anticipated on unseen data. Which leads us to conclude that we have overfitting.
+
+### Prediction old photos
+However, we have decide to test what it would return with the dataset `OldPhotos`:
+![My Image](PredictedOldPhotos.png)
+
+## Conclusion
+In conclusion, our model has revealed challenges regarding lower precison than expected and the presence of overfitting in our colorization model.
+A possible way to improve the model could be byincreasing the saturation of the image predicted. This approach could be worth investigating as a post-processing step to refine the colorization results. Unfortunately we haven't had time to test it.
 
 ## Contributors
 * Laia Escursell Rof - laia.escursellr@autonoma.cat
