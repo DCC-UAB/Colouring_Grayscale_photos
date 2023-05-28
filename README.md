@@ -51,7 +51,7 @@ We can visually see the learning journey of our model. Each image it correspond 
 ![My Image](TrainedImages.png)
 We can obsrve the gradual evolution of the model's colorization ability as it learns from the training data. we can see that in the last epochs, we get a very good colorization of the images.
 During the training of our model, we monitored the progression of the losses over each epoch. Here is the losses graph. In this graph we have remove the value in the epoch zero in order to be able to see more precisely the values of the losses.
-![My Image](LossEvaluation/evaluation.png)
+![My Image](LossEvaluation/evalutaion.png)
 
 ### Validation
 Before considering the model for good, we have to examine how is conducted the validation process. Let's compare the original image in the RGB space to the one returned by our model.
