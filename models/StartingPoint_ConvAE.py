@@ -2,7 +2,7 @@ from torch import nn
 #from ..Preprocessing.DataClass import *
 #from ..Preprocessing.LoaderClass import *
 
-class modelAutoencoder1(nn.Module):
+class StartingPoint_ConvAE(nn.Module):
     def __init__(self, input_size):
         super().__init__()
         self.encoder = nn.Sequential(
