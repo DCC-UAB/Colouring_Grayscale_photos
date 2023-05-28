@@ -43,7 +43,7 @@ First of all, the document **Requirements.txt** should be executed to install al
 ```
 python main.py
 ```
-This will train the model ```ConvAE``` with the Landscape dataset in 500 epochs, and will generate 10 images of validation that will be saved in the **PredictedImages_Validation** directory along with the original colored picture. Moreover, a training loss evolution graphic will be saved in the **QuantitativeAnalysis** folder. 
+This will train the model ```ConvAE``` with the Landscape dataset in 500 epochs, and will generate 10 images of validation that will be saved in the **PredictedImages_Validation** directory along with the original colored picture. Moreover, a training loss evolution graphic will be saved in the **LossEvaluation** folder. 
 
 ### Train
 We can see how our model has been learning from the different epochs.
