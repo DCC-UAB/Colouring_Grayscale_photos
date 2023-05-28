@@ -19,7 +19,9 @@ This repository is structured as shown below:
 |--- PredictedImages_Training
 |--- PredictedImages_Validation
 |--- LossEvaluation
-|--- LandscapeDataset
+|--- TrainingLandscape
+|--- ValidationLandscape
+|--- OldPhotos
 |--- train.py
 |--- prediction.py
 |--- plots.py
