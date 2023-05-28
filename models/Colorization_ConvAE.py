@@ -1,6 +1,6 @@
 from torch import nn
 
-class ConvAE2(nn.Module):
+class Colorization_ConvAE(nn.Module):
     def __init__(self):
         super().__init__()
         self.encoder = nn.Sequential(
