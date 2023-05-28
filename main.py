@@ -6,9 +6,9 @@ from torch import nn
 from Preprocessing.DataClass import *
 from Preprocessing.LoaderClass import *
 from Preprocessing.ColorProcessing import *
-from models.modelAutoencoder1 import *
-from models.modelAutoencoder import *
-from models.ConvAE2 import *
+from models.StartingPoint_ConvAE import *
+from models.Simple_ConvAE import *
+from models.Colorization_ConvAE import *
 from train import *
 from plots import *
 from prediction import *
@@ -36,7 +36,7 @@ if __name__ == '__main__':
     
     dataloader = LoaderClass(train_dataset, 64) #Initialization of the dataloader
 
-    model = ConvAE2().to(device) #Initialization of the model
+    model = Colorization_ConvAE().to(device) #Initialization of the model
     init_parameters(model) #Xavier initialization of the weights
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay = 0.0) #Optimizer initialization
     criterion = nn.MSELoss() #Criterion initialization
@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
     #Load the model trained
     '''
-    model = model = ConvAE2()
+    model = Colorization_ConvAE()
     model.load_state_dict(torch.load('TrainedModel'))
     model.to(device)
     '''
