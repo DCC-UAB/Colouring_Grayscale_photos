@@ -1,7 +1,7 @@
 from torch import nn
 import torch
 
-class modelAutoencoder(nn.Module):
+class Simple_ConvAE(nn.Module):
     def __init__(self):
         super().__init__()
         self.conv1 = nn.Conv2d(1, 16, 4, stride=2, padding=1) #16, 64, 64
