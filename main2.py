@@ -25,16 +25,14 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 if __name__ == '__main__':
     print('start')
+    
     #wandb.init
     #Transformation aplied to the images
     trans = torchvision.transforms.ToTensor()
-        
+   
     train_path = 'TrainingLandscape' #Training images path
-    val_path = 'ValidationLandscape' #Validation images path
     train_dataset = DataClass(train_path, transform=trans) #Initialization of the dataset
     print('Train dataset started')
-    val_dataset = DataClass(val_path, transform=trans)
-    print('Val dataset started')
     
     dataloader = LoaderClass(train_dataset, 64) #Initialization of the dataloader
 
@@ -43,6 +41,25 @@ if __name__ == '__main__':
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay = 0.0) #Optimizer initialization
     criterion = nn.MSELoss() #Criterion initialization
     
-    train(model, dataloader, criterion, optimizer, 100) #Training of the model
+    #Print loss model
+    losses = train(model, dataloader, criterion, optimizer, 500) #Training of the model
+    showLoss(losses, './LossEvaluation/total')
+    losses.pop(0)
+    showLoss(losses, './LossEvaluation/evalutaion')
 
-    prediction(val_dataset, model, './PredictedImages_Validation/',10) #Prediction of some images
+    #Save the model so there is no need to train it again
+    torch.save(model.state_dict(), 'TrainedModel') 
+
+    #Load the model trained
+    '''
+    model = model = ConvAE2()
+    model.load_state_dict(torch.load('TrainedModel'))
+    model.to(device)
+    '''
+
+    #Validate the model
+    val_path = 'ValidationLandscape' #Validation images path
+    val_dataset = DataClass(val_path, transform=trans)  #Initialization of the dataset
+    print('Val dataset started')
+
+    prediction(val_dataset, model, './PredictedImages_Validation/', 10) #Prediction of some images
