@@ -18,7 +18,7 @@ This repository is structured as shown below:
     |--- Simple_ConvAE.py
 |--- PredictedImages_Training
 |--- PredictedImages_Validation
-|--- QuantitativeAnalysis
+|--- LossEvaluation
 |--- LandscapeDataset
 |--- train.py
 |--- prediction.py
