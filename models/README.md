@@ -1,0 +1,2 @@
+# Models
+This folder contains the two models we have used to predict the colors of black and white images. The first model we tried was `ConvAE1.py`, a really simple model formed by four convolutional layers and four maxpoolings. This model does not get good prediction results, this is why another model have been tested, `ConvAE2.py`. This one have ten convolutional layers and an hyperbolic tangent as the final activation function.

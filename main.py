@@ -1,62 +1,65 @@
-import os
-import random
 import wandb
-
-import numpy as np
 import torch
-import torch.nn as nn
 import torchvision
-import torchvision.transforms as transforms
-
+import numpy as np
+from torch import nn
+from Preprocessing.DataClass import *
+from Preprocessing.LoaderClass import *
+from Preprocessing.ColorProcessing import *
+from models.StartingPoint_ConvAE import *
+from models.Simple_ConvAE import *
+from models.Colorization_ConvAE import *
 from train import *
-from test import *
-from utils.utils import *
-from tqdm.auto import tqdm
+from plots import *
+from prediction import *
 
-# Ensure deterministic behavior
-torch.backends.cudnn.deterministic = True
-random.seed(hash("setting random seeds") % 2**32 - 1)
-np.random.seed(hash("improves reproducibility") % 2**32 - 1)
-torch.manual_seed(hash("by removing stochasticity") % 2**32 - 1)
-torch.cuda.manual_seed_all(hash("so runs are repeatable") % 2**32 - 1)
+#Function to initialize the weights using Xavier initialization
+def init_parameters(model):
+  for name, w in model.named_parameters():
+    if "weight" in name:
+      nn.init.xavier_normal_(w)
+    if "bias" in name:
+      nn.init.zeros_(w)
 
-# Device configuration
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-# remove slow mirror from list of MNIST mirrors
-torchvision.datasets.MNIST.mirrors = [mirror for mirror in torchvision.datasets.MNIST.mirrors
-                                      if not mirror.startswith("http://yann.lecun.com")]
+if __name__ == '__main__':
+    print('start')
+    
+    #wandb.init
+    #Transformation aplied to the images
+    trans = torchvision.transforms.ToTensor()
+   
+    train_path = 'TrainingLandscape' #Training images path
+    train_dataset = DataClass(train_path, transform=trans) #Initialization of the dataset
+    print('Train dataset started')
+    
+    dataloader = LoaderClass(train_dataset, 64) #Initialization of the dataloader
 
+    model = Colorization_ConvAE().to(device) #Initialization of the model
+    init_parameters(model) #Xavier initialization of the weights
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay = 0.0) #Optimizer initialization
+    criterion = nn.MSELoss() #Criterion initialization
+    
+    #Print loss model
+    losses = train(model, dataloader, criterion, optimizer, 500) #Training of the model
+    showLoss(losses, './LossEvaluation/total')
+    losses.pop(0)
+    showLoss(losses, './LossEvaluation/evalutaion')
 
+    #Save the model so there is no need to train it again
+    torch.save(model.state_dict(), 'TrainedModel') 
 
+    #Load the model trained
+    '''
+    model = Colorization_ConvAE()
+    model.load_state_dict(torch.load('TrainedModel'))
+    model.to(device)
+    '''
 
-def model_pipeline(cfg:dict) -> None:
-    # tell wandb to get started
-    with wandb.init(project="pytorch-demo", config=cfg):
-      # access all HPs through wandb.config, so logging matches execution!
-      config = wandb.config
+    #Validate the model
+    val_path = 'ValidationLandscape' #Validation images path
+    val_dataset = DataClass(val_path, transform=trans)  #Initialization of the dataset
+    print('Val dataset started')
 
-      # make the model, data, and optimization problem
-      model, train_loader, test_loader, criterion, optimizer = make(config)
-
-      # and use them to train the model
-      train(model, train_loader, criterion, optimizer, config)
-
-      # and test its final performance
-      test(model, test_loader)
-
-    return model
-
-if __name__ == "__main__":
-    wandb.login()
-
-    config = dict(
-        epochs=5,
-        classes=10,
-        kernels=[16, 32],
-        batch_size=128,
-        learning_rate=5e-3,
-        dataset="MNIST",
-        architecture="CNN")
-    model = model_pipeline(config)
-
+    prediction(val_dataset, model, './PredictedImages_Validation/', 10) #Prediction of some images
